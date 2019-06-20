@@ -1,0 +1,6 @@
+[submodule "libs/tjakubo2/TTS_lib"]
+	path = libs/tjakubo2/TTS_lib
+	url = https://github.com/tjakubo2/TTS_lib
+[submodule "libs/eruber/TTS_ULib"]
+	path = libs/eruber/TTS_ULib
+	url = https://github.com/eruber/TTS_ULib
