@@ -1,0 +1,26 @@
+
+function ObjectToGUID (e)
+    if type(e) == "table" then
+        for k, v in pairs(e) do
+            e[k] = ObjectToGUID(v)
+        end
+    elseif type(e) == "userdata" and e.guid ~= nil then
+        e = e.guid
+    end
+    return e
+end
+
+function GUIDToObject (e)
+    if type(e) == "table" then
+        for k, v in pairs(e) do
+            e[k] = GUIDToObject(v)
+        end
+    elseif type(e) == "string" and string.len(e) == 6 then
+        r = getObjectFromGUID(e)
+        if r == nil then
+            error("Item with guid "..e.." not found")
+        end
+        e = r
+    end
+    return e
+end

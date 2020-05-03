@@ -1,0 +1,6 @@
+
+-- Function rgbToHex: http://gameon365.net/index.php
+function rgbToHex(c)
+    local output = decToHex(math.floor(c[1] * 255)) .. decToHex(math.floor(c[2] * 255)) .. decToHex(math.floor(c[3] * 255));
+    return output
+end

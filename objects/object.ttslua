@@ -1,0 +1,32 @@
+
+if not TTSUtil then
+    TTSUtil = {}
+end
+
+TTSUtil.Object = {
+    getWorldSnapPoint = function(object, snapPointID, snapToTop)
+        if object.getSnapPoints()[snapPointID] == nil then
+            return nil
+        end
+
+        local snap = object.getSnapPoints()[snapPointID]
+        local objPos = object.getPosition()
+        local pos = {
+            x = objPos.x - snap.position.x,
+            y = objPos.y - snap.position.y,
+            z = objPos.z - snap.position.z
+        }
+
+        if snapToTop then
+            pos = object.positionToLocal(pos)
+            pos.y = pos.y + object.getBounds().size.y
+            pos = object.positionToWorld(pos)
+        end
+
+        return {
+            position = pos,
+            rotation = snap.rotation,
+            rotation_snap = snap.rotation_snap
+        }
+    end
+}
