@@ -1,0 +1,61 @@
+do
+
+    if not Decker then
+        error("Missing Decker lib")
+    end
+
+    function Decker.ImportI18nDeck (deckData, params)
+        --local deckerAssets = {}
+        local deckerCards = {}
+        local getI18nString = function (data, key, params)
+            if data == nil or key == nil then
+                return nil
+            end
+            return (data[key .. '_prefix'] or "")
+            .. (
+                data.i18n and data.i18n[params.lang] and data.i18n[params.lang][key]
+                or data[key] or ""
+            )
+            .. (data[key .. '_suffix'] or "")
+        end
+
+        for assetId, assetData in pairs(deckData.assets) do
+            local deckerAsset = Decker.Asset(assetData.face, assetData.back, assetData)
+            --[[
+        table.insert(
+            deckerAssets,
+            assetId,
+            Decker.Asset(assetData.face, assetData.back, assetData)
+        )
+        ]]
+
+            for cardId, cardData in pairs(assetData.cardData) do
+                cardId = cardData.id or cardId
+
+                cardData.name = getI18nString(cardData, 'name', params)
+                cardData.desc = getI18nString(cardData, 'desc', params)
+                cardData.tooltip = cardData.tooltip or assetData.tooltip
+
+                -- Default cards attributes
+                cardData.Hands = cardData.hands or true
+
+                table.insert(
+                    deckerCards,
+                    Decker.Card(
+                        deckerAsset,
+                        cardData.row_num or math.floor(cardId / assetData.width) + 1,
+                        cardData.col_num or cardId % assetData.width + 1,
+                        cardData
+                    )
+                )
+            end
+        end
+
+        return Decker.Deck(deckerCards, {
+            name = getI18nString(deckData, 'name', params),
+            desc = getI18nString(deckData, 'desc', params),
+        })
+    end
+
+
+end
